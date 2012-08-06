@@ -1,0 +1,110 @@
+#=========================#
+# GNU SCREEN CONFIG FILE  #
+# IceAxe 2012.07.02       #
+# ========================#
+
+## PREFERENCES ##
+startup_message off
+defscrollback 10000
+
+## COMMANDS ##
+backtick 100 86400 86400 uname -m # Architecture
+backtick 101 3600 3600 hostname -i # IP address 
+backtick 102 5 5 $HOME/src/stat/stat.sh # RAM usage
+backtick 103 3600 3600 $HOME/src/cpu/CountCPUs.py # No CPUs
+backtick 104 3600 3600 $HOME/src/cpu/CountCores.py # No cores
+backtick 105 3600 3600 $HOME/src/cpu/CountGHz.py # Total speed / GHz
+
+## COLOURS ##
+backtick 2 86400 86400 printf "\005{=b dk}"   # bold grey
+backtick 3 86400 86400 printf "\005{-b dw}"   # white
+backtick 4 86400 86400 printf "\005{-b dg}"   # green
+
+caption always "%2`[%4`$USER%3`@%4`%H%2`][%4`%100`%2`][%3`Cores %4`%104`%2`]%=%4`%-Lw%?%2`(%3`%n:%t%2`)%3`%?%4`%+Lw%?"
+
+hardstatus alwayslastline "%2`[%4`%Y-%m-%d%2`][%4`%0C:%s%a%2`][%4`%101`%2`]%=[%3`RAM Usage %4`%102`%2`][%3`Load %4`%l%2`]"
+
+#hardstatus alwayslastline "%2`[%4`%Y-%m-%d%2`][%4`%0C:%s%a%2`][%3`CPUs %4`%103`%2`][%3`cores %4`%104`%2`][%3`Speed %4`%105` GHz%2`]%=[%3`RAM Usage %4`%102`%2`][%3`Load %4`%l%2`]"
+
+sorendition "-b dw"
+
+### EXPLANATION ###
+#
+# backtick LABEL LIFETIME UPDATE-TIME FULLPATH-TO-SCRIPT
+#
+# The caption line gets repeated for each window being displayed (using :split),
+#
+#    always                  - display the caption continuously.  Since
+#                              hardstatus is 'alwayslastline', it will be on the
+#                              next to last line.
+#    "%?%F"                  - if (leading '%?') this region has focus ('%F') 
+#                              (e.g. it's the only region being displayed, or,
+#                              if in split-screen mode, it's the currently active
+#                              region)
+#    "%{= Kk}"               - set the colorscheme to blac[k] on grey (bright blac[K]),
+#                              with no other effects (standout, underline, etc.)
+#    "%:"                    - otherwise ('%:' between a pair of '%?'s)
+#    "%{=u kR}"              - set the colorscheme to [R]ed on blac[k], and
+#                              underline it, but no other effects (bold, standout, etc.) 
+#    "%?"                    - end if (trailing '%?')
+#    "  %h "                 - print two spaces, tthne the [h]ardstatus of the
+#                              current tab window (as set by zsh - see zshrc) and
+#                              then another space.
+#    "%-024="                - either pad (with spaces) or truncate the previous
+#                              text so that the rest of the caption string starts
+#                              24 characters ('024') from the right ('-') edge of
+#                              the caption line.
+#                              NOTE: omitting the '0' before the '24' would pad
+#                              or truncate the text so it would be 24% from the
+#                              right.
+#    "%{+b}                  - add ('+') [b]old to the current text effects, but
+#                              don't change the current colors.
+#    " %C:%s%a %D %d %M %Y"  - print the [C]urrent time, a colon, the [s]econds,
+#                              whether it's [a]m or pm, the [D]ay name, the [d]ay
+#                              of the month, the [M]onth, and the [Y]ear.
+#                              (this takes up 24 characters, so the previous
+#                              pad/truncate command makes sure the clock doesn't
+#                              get pushed off of the caption line)
+#    "%{= dd}"               - revert to the [d]efault background and [d]efault
+#                              foreground colors, respectively, with no ('= ')
+#                              other effects.
+#  other things that might be useful later are
+#    " %H"                   - print a space, then the [H]ostname.
+#    "(%{.K}%l%{-}):"        - print a '(', then change the text color to grey
+#                              (aka bright blac[K]), and print the current system
+#                              [l]oad.  Then revert to the previous colorscheme
+#                              ('%{-}') and print a close ')' and a colon.
+#                              NOTE: the load is only updated when some other
+#                              portion of the caption string needs to be changed
+#                              (like the seconds in the clock, or if there were a
+#                              backtick command)
+#    "%0`"                   - put the output of a backtick command in the line
+#    "%-024<"                - don't pad, just truncate if the string is past 24
+#                              characters from the right edge
+#    "%-="                   - pad (with spaces) the previous text text so that
+#                              the rest of the caption string is justified
+#                              against the right edge of the screen.
+#                              NOTE: doesn't appear to truncate previous text.
+#    alwayslastline      - always display the hardstatus as the last line of the
+#                          terminal
+#    "%{= kR} %-Lw"      - change to a blac[k] background with bright [R]ed text,
+#                          and print all the tab [w]indow numbers and titles in
+#                          the [L]ong format (ie with flags) upto ('-') the
+#                          current tab window
+#    "%{=b Kk} %n%f %t " - change to grey (bright blac[K]) background with
+#                          [b]old blac[k] text, with no other effects, and print
+#                          the [n]umber of the current tab window, any [f]lags it
+#                          might have, and the [t]itle of the current tab window
+#                          (as set by zsh - see zshrc).
+#                          NOTE: the color match with the caption line makes it
+#                          appear as if a 'tab' is dropping down from the caption
+#                          line, highlighting the number & title of the current
+#                          tab window.  Nifty, ain't it)
+#    "%{-}%+Lw "         - revert to the previous color scheme (red on black)
+#                          and print all the tab [w]indow numbers and titles in
+#                          the [L]ong format (ie with flags) after ('+') the
+#                          current tab window.
+#    "%=%{= dd}"         - pad all the way to the right (since there is no text
+#                          that follows this) and revert to the [d]efault
+#                          background and [d]efault foreground colors, with no
+#                          ('= ') other effects.

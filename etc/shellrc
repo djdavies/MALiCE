@@ -1,0 +1,26 @@
+# Include my own executables ~/bin
+PATH=$PATH:$HOME/bin
+
+# Idiot-proof delete.
+SafeDelete()
+{
+    mv $1 ~/.trash/$1--$(date +%Y-%m-%d--%H:%M:%S).trash
+}
+
+alias rm=SafeDelete
+alias delete='\rm'
+
+# Shiny bash history :)
+export HISTTIMEFORMAT="%F %T "
+
+# Set size of history file to 2Mb
+export HISTFILESIZE=2000000
+
+# Write each command to the external history.
+PROMPT_COMMAND='history 1 >> $HOME/.eternal_history'
+
+# Include my bin directory in the PATH
+if [ -d "$HOME/bin" ]; then
+    PATH="$HOME/bin:$PATH"
+fi
+

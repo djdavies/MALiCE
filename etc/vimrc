@@ -1,0 +1,30 @@
+call pathogen#infect()
+call pathogen#helptags()
+syntax on
+filetype plugin indent on
+set ofu=syntaxcomplete#Complete
+colorscheme ron
+set number
+set history=700
+set wildmenu
+set wildmode=list:longest,full
+set ruler
+set hlsearch
+set incsearch
+set noerrorbells
+set showmatch
+set expandtab
+set smarttab
+set shiftwidth=4
+set tabstop=4
+set showcmd
+let mapleader = ","
+nmap <leader>w :w!<cr>
+nnoremap <F2> :set nonumber!<CR>:set foldcolumn=0<CR>
+map <space> /
+map <c-space> ?
+map <leaderder>ss :setlocal spell!<cr>
+map T :TaskList<CR>
+map P :TagbarToggle<CR>
+map [ :MBEbp<CR>
+map ] :MBEbn<CR>
